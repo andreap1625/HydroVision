@@ -77,3 +77,28 @@ with open(output_path, "w", newline="") as f:
     writer.writerows(csv_rows)
 
 print(f"Archivo CSV guardado exitosamente en: {output_path}")
+
+#Anexar fila a datos de entrenamiento
+# Leer la fila del nuevo CSV
+new_data_path = os.path.join(RUTA_GUARDAR, "new_measurement.csv")
+new_data = pd.read_csv(new_data_path)
+
+# Obtener el año de la fecha en la nueva fila
+fecha_str = new_data.loc[0, "Fecha"]  
+a = datetime.strptime(fecha_str, "%d/%m/%Y").year
+
+# Nombre del archivo destino
+output_filename = f"datos_TAG_{a}.csv"
+output_filepath = os.path.join(RUTA_TRAIN, output_filename)
+
+# Crear carpeta si no existe
+os.makedirs(RUTA_TRAIN, exist_ok=True)
+
+# Si el archivo no existe, crearlo con encabezado
+if not os.path.exists(output_filepath):
+    new_data.to_csv(output_filepath, index=False)
+    print(f"Archivo creado: {output_filepath}")
+else:
+    # Si el archivo existe, anexar la fila sin encabezado
+    new_data.to_csv(output_filepath, mode='a', header=False, index=False)
+    print(f"Fila anexada a: {output_filepath}")
