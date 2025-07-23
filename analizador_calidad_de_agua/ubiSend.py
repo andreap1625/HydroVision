@@ -40,7 +40,7 @@ def send_value(variable_label, value, timestamp):
         variable_label: float(value),
     }
     response = requests.post(url, headers=HEADERS, json=payload, params={"force": "true"})
-    if response.status_code == 201:
+    if response.status_code == 200:
         print(f"Enviado: {variable_label} = {value}")
     else:
         print(f"Error al enviar {variable_label}: {response.status_code} - {response.text}")
